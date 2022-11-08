@@ -2,17 +2,28 @@
 #include <vector>
 #include <string>
 
-using namespace std;
+using std::vector;
+using std::string;
+using std::to_string;
 
 void solution(short n) {
+    short nOfSol = 0;
+    vector <string> inputs;
+    for (int j = 0; j < n; j++) {
+        string s1, s2;
+        std::cin >> s1 >> s2;
+        inputs.push_back(s1);
+        inputs.push_back(s2);
+    }
+
     for (int i = 0; i < n; i++) {
-        string l1, l2;
         vector <int> l1Colons;
         vector <int> l2Colons;
         long long l1Num = 0, l2Num = 0;
         string l1NumS, l2NumS;
 
-        cin >> l1 >> l2;
+        string l1 = inputs[nOfSol], l2 = inputs[nOfSol + 1];
+        nOfSol += 2;
 
         // ----- Decoding -----
         for (int j = 0; j < l1.length(); j++)
@@ -37,7 +48,10 @@ void solution(short n) {
                     colonNumber++;
                 }
             }
-            l1NumS += temp;
+            if (colonNumber % 2 != 0) {
+                l1NumS += string(stoi(temp), '0');
+            }
+            else l1NumS += temp;
         }
         if (l2Colons.size() == 0) l2NumS += l2;
         else {
@@ -57,16 +71,19 @@ void solution(short n) {
                     colonNumber++;
                 }
             }
-            l2NumS += temp;
+            if (colonNumber % 2 != 0) {
+                l2NumS += string(stoi(temp), '0');
+            }
+            else l2NumS += temp;
+
         }
-        
+
         // ----- Math -----
-
-        l1Num = stoi(l1NumS);
-        l2Num = stoi(l2NumS);
-
+        l1Num = stoll(l1NumS);
+        l2Num = stoll(l2NumS);
         long long sol = l1Num + l2Num;
         string solS = to_string(sol);
+        // std::cout << "\nSolution in int: " << sol;
 
         // ----- Encoding -----
         int zeroNumber = 0;
@@ -78,28 +95,40 @@ void solution(short n) {
             char ch = solS[j];
             if (ch != '0' && zeros == false) temp += ch;
             else if (ch != '0' && zeros == true) {
-                temp += ch;
+                if (zeroNumber > 2) {
+                    output += ':';
+                    output += to_string(zeroNumber);
+                    output += ':';
+                }
+                else output += string(zeroNumber, '0');
                 temp = "";
+                temp += ch;
                 zeros = false;
                 zeroNumber = 0;
             }
             else if (ch == '0' && zeros == false) {
                 output += temp;
+                temp = "";
                 zeroNumber++;
-                zeros == true;
-                temp = "0";
+                zeros = true;
             }
-            else if (ch == '0' && zeros == true) {
-                temp += '0';
-                zeroNumber++;
-            }
+            else if (ch == '0' && zeros == true) zeroNumber++;
         }
+        if (zeroNumber > 2) {
+            output += ':';
+            output += to_string(zeroNumber);
+        }
+        else if (zeroNumber < 3 && zeroNumber > 0) {
+            output += string(zeroNumber, '0');
+        }
+        else output += temp;
+        std::cout << std::endl << output;
     }
 }
 
 int main() {
     short n;
-    cin >> n;
+    std::cin >> n;
 
     solution(n);
 }
