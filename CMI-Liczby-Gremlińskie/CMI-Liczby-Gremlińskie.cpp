@@ -1,6 +1,6 @@
 ﻿#include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 using std::vector;
 using std::string;
@@ -17,8 +17,7 @@ void solution(short n) {
     }
 
     for (int i = 0; i < n; i++) {
-        vector <int> l1Colons;
-        vector <int> l2Colons;
+        long long l1ColonsNumber = 0, l2ColonsNumber = 0;
         long long l1Num = 0, l2Num = 0;
         string l1NumS, l2NumS;
 
@@ -27,10 +26,10 @@ void solution(short n) {
 
         // ----- Decoding -----
         for (int j = 0; j < l1.length(); j++)
-            if (l1[j] == ':') l1Colons.push_back(j);
+            if (l1[j] == ':') l1ColonsNumber++;
         for (int j = 0; j < l2.length(); j++)
-            if (l2[j] == ':') l2Colons.push_back(j);
-        if (l1Colons.size() == 0) l1NumS = l1;
+            if (l2[j] == ':') l2ColonsNumber++;
+        if (l1ColonsNumber == 0) l1NumS = l1;
         else {
             int colonNumber = 0;
             string temp = "";
@@ -53,7 +52,7 @@ void solution(short n) {
             }
             else l1NumS += temp;
         }
-        if (l2Colons.size() == 0) l2NumS += l2;
+        if (l2ColonsNumber == 0) l2NumS += l2;
         else {
             int colonNumber = 0;
             string temp = "";
